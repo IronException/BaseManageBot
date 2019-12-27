@@ -1,8 +1,8 @@
 import discord
 import Config
+import Reaction
 
 reactions = {}
-reactions["IronException#4092"] = "Send me that \N{THUMBS UP SIGN} reaction, mate"
 
 
 class MyClient(discord.Client):
@@ -14,13 +14,10 @@ class MyClient(discord.Client):
         print('Message from {0.author}: {0.content}'.format(message))
         if message.author.id == self.user.id:
             return
+        rV = Reaction.react(message.author, message.content, reactions)
+        if rV:
+            await message.channel.send(rV)
 
-        for r in reactions:
-            if str(message.author) == r:
-                await message.channel.send(reactions[r])
-
-        if message.content.startswith("!add"):
-            print(message.content)
 
 
 client = MyClient()
